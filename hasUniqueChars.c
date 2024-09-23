@@ -88,12 +88,23 @@ bool hasUniqueChars(char * inputStr) {
   // -------------------------------------------------------------
 
   // TODO: Declare additional variables you need here
-
   
   for(i = 0; i < strlen(inputStr); i++) {
     nextChar = inputStr[i];
     // TODO: Add your code here to check nextChar, see if it is a duplicate, and update the checkBits variables
-
+    if((int)nextChar < 65){
+      if(checkBitsexcl_amp & (long)1 << ((long)nextChar - 33)){
+        return false;
+      }
+      
+      checkBitsexcl_amp |= (long)1 << ((long)nextChar - 33);
+    }
+    else{
+      if( checkBitsA_z & (long)1 << ((long)nextChar - 65)){
+        return false;
+      }
+      checkBitsA_z |= (long)1 << ((long)nextChar - 65);
+    }
     // -------------------------------------------------------------
     // Below this are examples of debugging print statements you could use
     // Move/use as makes sense for you!
