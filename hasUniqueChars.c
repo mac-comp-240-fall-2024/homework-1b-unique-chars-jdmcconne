@@ -1,9 +1,9 @@
 /*
  * hasUniqueChars.c
  * 
- * TODO: replace this line with lines containing a description
- * 
- * Author: 
+ * Contains method hasUniqueChars and its helper methods.  Checks whether strings contain 
+ * both all printable characters and all unique values (Excluding spaces)
+ * Author: James McConnell
  */
 
 #include <stdio.h>  // fprintf, printf
@@ -31,9 +31,6 @@ void seeBits(unsigned long value, char *debug_text) {
   
 }
 
-
-// TODO: Read this carefully to see how to loop over characters of a string
-// TODO: (Remove TODOs once you have completed the task they describe)
 /*
  * Given an input string of chars, check for any non-printing
  * characters and print an error and exit if the string has any.
@@ -55,8 +52,11 @@ void checkInvalid(char * inputStr) {
 
 
 /*
- * TODO: Replace this code by a good description this function takes in, does and returns.
- * Include the error conditions that cause it to exit with failure.
+ * Accepts a string, checks if input string contains only printable characters without duplicates
+ * (Excluding spaces) and outputs a boolean value.  If the string 
+ * contains non-printable characters, an invalid character error will be thrown.  If all characters
+ * are printable but there are duplicates, false will be returned, while if there are no duplicates, 
+ * true will be returned.
  */
 bool hasUniqueChars(char * inputStr) {
   // bail out quickly if any invalid characters
@@ -76,48 +76,34 @@ bool hasUniqueChars(char * inputStr) {
   // and checkBitsexcl_amp, for debugging purposes. 
   // It also illustrates how to use the seeBits function for debugging.
   // Printed values should initially be all zeros
-  // TODO: remove or comment out this code when satisfied of function correctness
   
-  char debug_str_A_z[128];
-  strcpy(debug_str_A_z, "checkBitsA_z before: \n");
-  seeBits(checkBitsA_z, debug_str_A_z);
+  // char debug_str_A_z[128];
+  // strcpy(debug_str_A_z, "checkBitsA_z before: \n");
+  // seeBits(checkBitsA_z, debug_str_A_z);
   
-  char debug_str_excl_amp[128];
-  strcpy(debug_str_excl_amp, "checkBitsexcl_amp before: \n");
-  seeBits(checkBitsexcl_amp, debug_str_excl_amp);
+  // char debug_str_excl_amp[128];
+  // strcpy(debug_str_excl_amp, "checkBitsexcl_amp before: \n");
+  // seeBits(checkBitsexcl_amp, debug_str_excl_amp);
   // -------------------------------------------------------------
-
-  // TODO: Declare additional variables you need here
   
-  for(i = 0; i < strlen(inputStr); i++) {
+  for(i = 0; i < strlen(inputStr); i++) { //loop through input string
     nextChar = inputStr[i];
-    // TODO: Add your code here to check nextChar, see if it is a duplicate, and update the checkBits variables
-    if((int)nextChar < 65){
-      if(checkBitsexcl_amp & (long)1 << ((long)nextChar - 33)){
+  
+    //Check if char is a space, and whether to store it in checkBitsA_z or checkBitsexcl_amp.
+    if((int)nextChar < 65 && (int)nextChar != 32){
+      if(checkBitsexcl_amp & (long)1 << ((long)nextChar - 33)){  //Check if duplicate
         return false;
       }
-      
+      //Update long to reflect that we've seen this character
       checkBitsexcl_amp |= (long)1 << ((long)nextChar - 33);
     }
-    else{
-      if( checkBitsA_z & (long)1 << ((long)nextChar - 65)){
+    else if((int)nextChar != 32){//Handle space edge case
+      if( checkBitsA_z & (long)1 << ((long)nextChar - 65)){  //Check if duplicate
         return false;
       }
+      //Update long to reflect that we've seen this character
       checkBitsA_z |= (long)1 << ((long)nextChar - 65);
     }
-    // -------------------------------------------------------------
-    // Below this are examples of debugging print statements you could use
-    // Move/use as makes sense for you!
-    // Modify to work on checkBitsexcl_amp
-    // TODO: Comment out or remove when your function works correctly
-    printf("nextchar int value: %d\n", nextChar);
-    char char_str[2] = "\0";
-    char_str[0] = nextChar;
-    strcpy(debug_str_A_z, "nextchar: ");
-    strcat(debug_str_A_z, char_str);
-    strcat(debug_str_A_z,", checkBitsA_z: \n");
-    seeBits(checkBitsA_z, debug_str_A_z);
-    // ------------------------------------------------------------- 
   }
 
   // if through all the characters, then no duplicates found
